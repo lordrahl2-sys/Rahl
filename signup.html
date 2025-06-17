@@ -1,0 +1,96 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign Up - Darken Rahl</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #000, #111);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      color: #fff;
+    }
+    .card {
+      background: #1f1f1f;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+      width: 100%;
+      max-width: 400px;
+    }
+    h2 {
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    input {
+      width: 100%;
+      padding: 0.75rem;
+      margin-bottom: 1rem;
+      border: none;
+      border-radius: 8px;
+      background: #333;
+      color: #fff;
+      font-size: 1rem;
+    }
+    button {
+      width: 100%;
+      padding: 0.75rem;
+      border: none;
+      border-radius: 8px;
+      background: #4a90e2;
+      color: #fff;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background: #357ABD;
+    }
+    .error, .success {
+      text-align: center;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+    }
+    .error { color: red; }
+    .success { color: #4caf50; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Create Account</h2>
+    <div id="message"></div>
+    <input type="email" id="email" placeholder="Email Address" required />
+    <input type="password" id="password" placeholder="Password" required />
+    <button onclick="signupUser()">Sign Up</button>
+    <p style="text-align:center; font-size: 0.9rem;">Already have an account? <a href="login.html" style="color: #4a90e2;">Login</a></p>
+  </div>  <script>
+    function signupUser() {
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const message = document.getElementById("message");
+
+      if (!email || !password) {
+        message.innerHTML = '<div class="error">Please fill in all fields.</div>';
+        return;
+      }
+
+      let users = JSON.parse(localStorage.getItem("users") || "[]");
+      const exists = users.find(u => u.email === email);
+      if (exists) {
+        message.innerHTML = '<div class="error">Email is already registered.</div>';
+        return;
+      }
+
+      users.push({ email, password });
+      localStorage.setItem("users", JSON.stringify(users));
+      message.innerHTML = '<div class="success">Account created! You can now <a href="login.html" style="color: #4a90e2;">login</a>.</div>';
+      document.getElementById("email").value = "";
+      document.getElementById("password").value = "";
+    }
+  </script></body>
+</html>
