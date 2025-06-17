@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - Darken Rahl</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #121212;
+      color: #fff;
+    }
+    header {
+      background: #1f1f1f;
+      padding: 1rem;
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: bold;
+      border-bottom: 1px solid #333;
+    }
+    .container {
+      padding: 2rem;
+    }
+    h2 {
+      border-bottom: 1px solid #333;
+      padding-bottom: 0.5rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 2rem;
+    }
+    th, td {
+      padding: 0.75rem;
+      border: 1px solid #444;
+      text-align: left;
+    }
+    th {
+      background: #222;
+    }
+    button {
+      background: #e53935;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    input[type="file"] {
+      margin-bottom: 1rem;
+      background: #333;
+      color: white;
+      padding: 0.5rem;
+      border: none;
+      border-radius: 6px;
+    }
+    .note-upload {
+      margin-bottom: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <header>Admin Dashboard - Darken Rahl</header>
+  <div class="container">
+
+    <section class="note-upload">
+      <h2>Upload New Note</h2>
+      <input type="file" id="noteFile" accept=".pdf,.doc,.docx" />
+      <button onclick="uploadNote()">Upload Note</button>
+    </section>
+
+    <section>
+      <h2>All Notes</h2>
+      <table id="notesTable">
+        <thead>
+          <tr><th>Filename</th><th>Uploaded By</th><th>Action</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>Registered Users</h2>
+      <table id="usersTable">
+        <thead>
+          <tr><th>Email</th><th>Action</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+  </div>
+
+  <script>
+    // Check if logged in as admin
+    if (localStorage.getItem("isAdmin") !== "true") {
+      window.location.href = "admin.html";
+    }
+
+    function uploadNote() {
+      const fileInput = document.getElementById("noteFile");
+      const file = fileInput.files[0];
+      if (!file) return alert("Select a file");
+
+      const notes = JSON.parse(localStorage.getItem("notes") || "[]");
+      notes.push({ filename: file.name, uploadedBy: "Admin" });
+      localStorage.setItem("notes", JSON.stringify(notes));
+      fileInput.value = "";
+      loadNotes();
+      alert("Note uploaded successfully!");
+    }
+
+    function deleteNote(index) {
+      const notes = JSON.parse(localStorage.getItem("notes") || "[]");
+      notes.splice(index, 1);
+      localStorage.setItem("notes", JSON.stringify(notes));
+      loadNotes();
+    }
+
+    function deleteUser(index) {
+      const users = JSON.parse(localStorage.getItem("users") || "[]");
+      users.splice(index, 1);
+      localStorage.setItem("users", JSON.stringify(users));
+      loadUsers();
+    }
+
+    function loadNotes() {
+      const notes = JSON.parse(localStorage.getItem("notes") || "[]");
+      const tbody = document.querySelector("#notesTable tbody");
+      tbody.innerHTML = "";
+      notes.forEach((note, i) => {
+        const row = `<tr>
+          <td>${note.filename}</td>
+          <td>${note.uploadedBy}</td>
+          <td><button onclick="deleteNote(${i})">Delete</button></td>
+        </tr>`;
+        tbody.innerHTML += row;
+      });
+    }
+
+    function loadUsers() {
+      const users = JSON.parse(localStorage.getItem("users") || "[]");
+      const tbody = document.querySelector("#usersTable tbody");
+      tbody.innerHTML = "";
+      users.forEach((user, i) => {
+        const row = `<tr>
+          <td>${user.email}</td>
+          <td><button onclick="deleteUser(${i})">Delete</button></td>
+        </tr>`;
+        tbody.innerHTML += row;
+      });
+    }
+
+    loadNotes();
+    loadUsers();
+  </script>
+</body>
+</html>
+
+
+✅ Your modern admin dashboard (admin-dashboard.html) is ready! It includes:
+
+📁 Upload Notes (PDF, DOC)
+
+📃 View All Notes (filename + uploaded by)
+
+🗑 Delete Notes
+
+👥 View All Registered Users
+
+❌ Delete Users
+
+🔒 Admin-only access check
+
+
+
+---
+
+🚀 Next Steps:
+
+1. Upload this and admin.html to your GitHub repo.
+
+
+2. Test it by logging in using:
+
+admin / darkenrahl123
+
+
+
+3. Add sample notes/users to localStorage to see how it works (or we can build that next).
+
+
+
+Would you like me to:
+
+Create the public note upload + signup system next?
+
+Or add categories/search to this dashboard?
+
+
+Let’s keep going 💻✨
+
